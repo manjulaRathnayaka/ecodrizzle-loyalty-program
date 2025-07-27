@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useAuth } from '../contexts/AuthContext'
-import { mockApi } from '../api/mockApi'
+import { apiClient } from '../api/apiClient'
 
 const ProfileContainer = styled.div`
   padding: ${({ theme }) => theme.spacing.lg} 0;
@@ -264,7 +264,7 @@ const Profile: React.FC = () => {
     setSaving(true)
     
     try {
-      await mockApi.updateUserProfile({ preferences })
+      await apiClient.updateUserProfile({ preferences })
       updateUser({ preferences })
     } catch (error) {
       console.error('Failed to update preferences:', error)

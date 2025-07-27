@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { useAuth } from '../contexts/AuthContext'
-import { mockApi } from '../api/mockApi'
+import { apiClient } from '../api/apiClient'
 import type { SocialMediaPost, SocialMediaAccount } from '../types'
 
 const SocialMediaContainer = styled.div`
@@ -256,8 +256,8 @@ const SocialMedia: React.FC = () => {
     const loadSocialMediaData = async () => {
       try {
         const [postsData, accountsData] = await Promise.all([
-          mockApi.getSocialMediaPosts(),
-          mockApi.getSocialMediaAccounts(),
+          apiClient.getSocialMediaPosts(),
+          apiClient.getSocialMediaAccounts(),
         ])
         setPosts(postsData)
         setAccounts(accountsData)
@@ -284,7 +284,7 @@ const SocialMedia: React.FC = () => {
 
     setClaiming(true)
     try {
-      const result = await mockApi.claimSocialMediaPoints(user.id, user.email)
+      const result = await apiClient.claimSocialMediaPoints(user.id, user.email)
       updateUser({ pointsBalance: user.pointsBalance + result.pointsEarned })
       
       setPosts(prevPosts => 

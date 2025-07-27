@@ -103,6 +103,49 @@ src/
 - Achievement badges
 - Account management
 
+## API Integration
+
+The application connects directly to the backend API for all data:
+
+### Configuration
+
+Set the API URL in your environment variables:
+
+```bash
+# .env
+VITE_API_URL=http://localhost:3001/api
+VITE_DEBUG=true
+```
+
+### Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `VITE_API_URL` | Backend API base URL | `http://localhost:3001/api` |
+| `VITE_DEBUG` | Enable API request logging | `true` |
+| `VITE_API_TIMEOUT` | Request timeout in milliseconds | `10000` |
+| `VITE_APP_NAME` | Application name | `EcoDrizzle Loyalty Program` |
+| `VITE_ENABLE_SOCIAL_MEDIA` | Enable social media features | `true` |
+| `VITE_ENABLE_REWARDS` | Enable rewards features | `true` |
+
+### API Endpoints
+
+The app expects the following API endpoints:
+
+- `POST /auth/login` - User authentication
+- `GET /users/profile` - Get user profile
+- `PUT /users/profile` - Update user profile  
+- `GET /points/balance` - Get points balance
+- `GET /points/transactions` - Get transaction history
+- `GET /rewards` - Get rewards catalog
+- `POST /rewards/:id/redeem` - Redeem reward
+- `GET /social-media/posts` - Get social media posts
+- `POST /social-media/claim` - Claim social media points
+
+### Backend Dependency
+
+The frontend application requires the backend API to be running for all functionality. The backend provides mock data for demonstration purposes.
+
 ## Deployment
 
 The application is ready for deployment to static hosting services like:
@@ -110,3 +153,19 @@ The application is ready for deployment to static hosting services like:
 - Vercel
 - GitHub Pages
 - AWS S3 + CloudFront
+
+### Environment-specific Deployments
+
+For different environments, update the `.env` file:
+
+**Production:**
+```bash
+VITE_API_URL=https://api.ecodrizzle.com/api
+VITE_DEBUG=false
+```
+
+**Staging:**
+```bash
+VITE_API_URL=https://staging-api.ecodrizzle.com/api
+VITE_DEBUG=true
+```

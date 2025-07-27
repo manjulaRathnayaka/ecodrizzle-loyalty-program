@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
 import type { User, AuthContextType } from '../types'
-import { mockApi } from '../api/mockApi'
+import { apiClient } from '../api/apiClient'
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
@@ -17,7 +17,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       try {
         const token = localStorage.getItem('authToken')
         if (token) {
-          const userData = await mockApi.getCurrentUser()
+          const userData = await apiClient.getCurrentUser()
           setUser(userData)
         }
       } catch (error) {
@@ -34,7 +34,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = async (email: string, password: string) => {
     setIsLoading(true)
     try {
-      const response = await mockApi.login(email, password)
+      const response = await apiClient.login(email, password)
       localStorage.setItem('authToken', response.token)
       setUser(response.user)
     } catch (error) {

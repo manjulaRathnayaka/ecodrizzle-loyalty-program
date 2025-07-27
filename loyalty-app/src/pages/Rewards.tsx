@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useAuth } from '../contexts/AuthContext'
-import { mockApi } from '../api/mockApi'
+import { apiClient } from '../api/apiClient'
 import type { Reward } from '../types'
 
 const RewardsContainer = styled.div`
@@ -203,7 +203,7 @@ const Rewards: React.FC = () => {
   useEffect(() => {
     const loadRewards = async () => {
       try {
-        const data = await mockApi.getRewards()
+        const data = await apiClient.getRewards()
         setRewards(data)
       } catch (error) {
         console.error('Failed to load rewards:', error)
@@ -226,7 +226,7 @@ const Rewards: React.FC = () => {
 
     setRedeeming(reward.id)
     try {
-      await mockApi.redeemReward(reward.id)
+      await apiClient.redeemReward(reward.id)
       updateUser({ pointsBalance: user.pointsBalance - reward.pointsRequired })
       setRedeemedReward(reward)
       setShowModal(true)

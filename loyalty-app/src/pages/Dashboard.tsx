@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { useAuth } from '../contexts/AuthContext'
-import { mockApi } from '../api/mockApi'
+import { apiClient } from '../api/apiClient'
 import type { Transaction } from '../types'
 
 const DashboardContainer = styled.div`
@@ -145,7 +145,7 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     const loadTransactions = async () => {
       try {
-        const data = await mockApi.getTransactions(1, 5)
+        const data = await apiClient.getTransactions(1, 5)
         setTransactions(data)
       } catch (error) {
         console.error('Failed to load transactions:', error)

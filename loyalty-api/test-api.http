@@ -1,0 +1,188 @@
+### EcoDrizzle Loyalty API Test File
+###
+
+@baseUrl = http://localhost:3001
+###
+GET {{baseUrl}}/health
+
+HTTP/1.1 200  - OK
+x-powered-by: Express
+vary: Origin
+access-control-allow-credentials: true
+content-type: application/json; charset=utf-8
+content-length: 100
+etag: W/"64-mC4swjXIb/Hd6dP8HGRtQ6fWjN0"
+date: Sun, 27 Jul 2025 10:45:32 GMT
+connection: close
+###
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "demo@example.com",
+  "password": "demo123"
+}
+
+HTTP/1.1 200  - OK
+x-powered-by: Express
+vary: Origin
+access-control-allow-credentials: true
+content-type: application/json; charset=utf-8
+content-length: 583
+etag: W/"247-4dHUnFm0ZBA24p4oPZQde/ykOgA"
+date: Sun, 27 Jul 2025 10:45:36 GMT
+connection: close
+###
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "newuser@example.com",
+  "password": "password123",
+  "name": "New User"
+}
+###
+GET {{baseUrl}}/api/auth/verify
+Authorization: Bearer YOUR_TOKEN_HERE
+###
+GET {{baseUrl}}/api/users/profile
+Authorization: Bearer YOUR_TOKEN_HERE
+
+HTTP/1.1 200  - OK
+x-powered-by: Express
+vary: Origin
+access-control-allow-credentials: true
+content-type: application/json; charset=utf-8
+content-length: 401
+etag: W/"191-FPiaI0N7Svr/obODAFrRM2PTw+c"
+date: Sun, 27 Jul 2025 10:45:48 GMT
+connection: close
+###
+PUT {{baseUrl}}/api/users/profile
+Content-Type: application/json
+Authorization: Bearer YOUR_TOKEN_HERE
+
+{
+  "name": "Updated Name",
+  "preferences": {
+    "notifications": false,
+    "theme": "dark",
+    "language": "en"
+  }
+}
+
+HTTP/1.1 200  - OK
+x-powered-by: Express
+vary: Origin
+access-control-allow-credentials: true
+content-type: application/json; charset=utf-8
+content-length: 394
+etag: W/"18a-He9sQWw62JfdduiPpr6HcZYgpxk"
+date: Sun, 27 Jul 2025 10:45:58 GMT
+connection: close
+###
+GET {{baseUrl}}/api/points/balance
+Authorization: Bearer YOUR_TOKEN_HERE
+
+HTTP/1.1 200  - OK
+x-powered-by: Express
+vary: Origin
+access-control-allow-credentials: true
+content-type: application/json; charset=utf-8
+content-length: 129
+etag: W/"81-SlY/wVyQ8WzJB7FeESRqSS0ECJg"
+date: Sun, 27 Jul 2025 10:46:07 GMT
+connection: close
+###
+GET {{baseUrl}}/api/points/history
+Authorization: Bearer YOUR_TOKEN_HERE
+
+HTTP/1.1 404  - Not Found
+x-powered-by: Express
+vary: Origin
+access-control-allow-credentials: true
+content-type: application/json; charset=utf-8
+content-length: 69
+etag: W/"45-41tGej5QNPIv9ECuYUkn++lolCA"
+date: Sun, 27 Jul 2025 10:46:18 GMT
+connection: close
+###
+POST {{baseUrl}}/api/points/add
+Content-Type: application/json
+Authorization: Bearer YOUR_TOKEN_HERE
+
+{
+  "amount": 100,
+  "description": "Social media post",
+  "category": "social_media"
+}
+
+HTTP/1.1 404  - Not Found
+x-powered-by: Express
+vary: Origin
+access-control-allow-credentials: true
+content-type: application/json; charset=utf-8
+content-length: 65
+etag: W/"41-KexAYtLhATm6BkIsF+jVvw6hbk0"
+date: Sun, 27 Jul 2025 10:46:22 GMT
+connection: close
+###
+GET {{baseUrl}}/api/rewards
+
+HTTP/1.1 200  - OK
+x-powered-by: Express
+vary: Origin
+access-control-allow-credentials: true
+content-type: application/json; charset=utf-8
+content-length: 836
+etag: W/"344-WPOxKSbfKpzgUA8YHq/PDz96hxs"
+date: Sun, 27 Jul 2025 10:46:27 GMT
+connection: close
+###
+GET {{baseUrl}}/api/rewards/1
+
+HTTP/1.1 404  - Not Found
+x-powered-by: Express
+vary: Origin
+access-control-allow-credentials: true
+content-type: application/json; charset=utf-8
+content-length: 64
+etag: W/"40-NUbdoUgW5IkMa+hgERq1GStuPxg"
+date: Sun, 27 Jul 2025 10:46:30 GMT
+connection: close
+###
+POST {{baseUrl}}/api/rewards/1/redeem
+Authorization: Bearer YOUR_TOKEN_HERE
+
+HTTP/1.1 200  - OK
+x-powered-by: Express
+vary: Origin
+access-control-allow-credentials: true
+content-type: application/json; charset=utf-8
+content-length: 176
+etag: W/"b0-BWlWgjbnPN2ZJSKeAeet+LcoAkI"
+date: Sun, 27 Jul 2025 10:46:33 GMT
+connection: close
+###
+GET {{baseUrl}}/api/social-media/accounts
+Authorization: Bearer YOUR_TOKEN_HERE
+###
+POST {{baseUrl}}/api/social-media/connect
+Content-Type: application/json
+Authorization: Bearer YOUR_TOKEN_HERE
+
+{
+  "platform": "instagram",
+  "username": "myusername"
+}
+###
+GET {{baseUrl}}/api/social-media/posts
+Authorization: Bearer YOUR_TOKEN_HERE
+###
+POST {{baseUrl}}/api/social-media/posts/1/claim
+Authorization: Bearer YOUR_TOKEN_HERE
+###
+OPTIONS {{baseUrl}}/api/auth/login
+Origin: http://localhost:5173
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: Content-Type

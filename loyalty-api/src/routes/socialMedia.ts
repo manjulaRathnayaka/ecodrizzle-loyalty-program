@@ -3,6 +3,20 @@ import { ApiResponse, SocialMediaPost } from '../types'
 
 const router = express.Router()
 
+interface SocialMediaAccount {
+  id: string
+  userId: string
+  platform: 'facebook' | 'twitter' | 'instagram' | 'linkedin'
+  handle: string
+  displayName: string
+  profileImageUrl: string
+  verified: boolean
+  connectedDate: string
+  lastSyncDate: string
+  isActive: boolean
+  permissions: string[]
+}
+
 const mockPosts: SocialMediaPost[] = [
   {
     id: '1',
@@ -25,6 +39,31 @@ const mockPosts: SocialMediaPost[] = [
     updatedAt: '2024-01-20T12:00:00Z',
   },
 ]
+
+const mockAccount: SocialMediaAccount = {
+  id: '1',
+  userId: '1',
+  platform: 'facebook',
+  handle: '@alexjohnson',
+  displayName: 'Alex Johnson',
+  profileImageUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
+  verified: false,
+  connectedDate: '2023-12-01T00:00:00Z',
+  lastSyncDate: '2024-01-20T12:00:00Z',
+  isActive: true,
+  permissions: ['read_posts', 'read_engagement'],
+}
+
+// Get social media accounts
+router.get('/accounts', (req, res) => {
+  const response: ApiResponse<SocialMediaAccount[]> = {
+    success: true,
+    message: 'Social media accounts retrieved successfully',
+    data: [mockAccount],
+    timestamp: new Date().toISOString()
+  }
+  res.json(response)
+})
 
 // Get social media posts
 router.get('/posts', (req, res) => {
