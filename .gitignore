@@ -1,0 +1,101 @@
+# Root level gitignore for EcoDrizzle Loyalty Program
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Node modules
+node_modules/
+
+# Build outputs
+dist/
+build/
+out/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Cache directories
+.cache/
+.npm/
+.eslintcache
+
+# TypeScript
+*.tsbuildinfo
+
+# Coverage directory used by tools like istanbul
+coverage/
+.nyc_output/
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Package manager lock files
+package-lock.json
+yarn.lock
+
+# Database files
+*.sqlite
+*.db
+*.db3
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+
+# Deployment files
+.vercel/
+.netlify/
+
+# SSL certificates
+*.pem
+*.key
+*.crt
+
+# Backup files
+*.bak
+*.backup
+
+# Archive files
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Project specific
+# Add any project specific files or directories here
