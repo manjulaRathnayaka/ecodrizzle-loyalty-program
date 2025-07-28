@@ -1,8 +1,8 @@
 schemaVersion: 1.2
-name: customer-api
+name: loyalty-customer-api
 componentType: service
 endpoints:
-  - name: customer-api
+  - name: loyalty-customer-api
     port: 8080
     type: REST
     service:
@@ -19,16 +19,13 @@ configurations:
         configForm:
           displayName: Enterprise Customer Rewards Backend URL
           type: string
-          default: "http://localhost:8080/enterprise-customer-rewards-system/service"
     - name: ENTERPRISE_CUSTOMER_REWARDS_BACKEND_USER
       valueFrom:
         configForm:
           displayName: Enterprise Customer Rewards Backend User
           type: string
-          default: "admin"
     - name: ENTERPRISE_CUSTOMER_REWARDS_BACKEND_PASS
       valueFrom:
         configForm:
           displayName: Enterprise Customer Rewards Backend Password
-          type: string
-          default: "admin123"
+          type: secret
