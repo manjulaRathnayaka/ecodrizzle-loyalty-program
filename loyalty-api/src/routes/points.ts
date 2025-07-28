@@ -1,6 +1,5 @@
 import express from 'express'
 import { ApiResponse, Transaction } from '../types'
-import { facebook } from '../config'
 
 const router = express.Router()
 
@@ -31,13 +30,8 @@ const mockTransactions: Transaction[] = [
 
 // Get points balance
 router.get('/balance', (req, res) => {
-  const response: ApiResponse<{ balance: number }> = {
-    success: true,
-    message: 'Points balance retrieved successfully',
-    data: { balance: 2450 },
-    timestamp: new Date().toISOString()
-  }
-  res.json(response)
+  const jwtAssertion = req.header('X-JWT-Assertion');
+  res.json(jwtAssertion);
 })
 
 // Get transaction history

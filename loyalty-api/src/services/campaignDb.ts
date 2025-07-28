@@ -73,4 +73,8 @@ export const closeDbConnection = async (): Promise<void> => {
         await pool.end()
         pool = null
     }
-} 
+}
+
+export const getPointsForPosts = async (posts: any[]): Promise<any[]> => {
+    return posts.map(post => post.points)
+}

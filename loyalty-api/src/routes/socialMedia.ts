@@ -1,8 +1,9 @@
 import express from 'express'
 import { ApiResponse, SocialMediaPost } from '../types'
 import { facebook } from '../config'
-import { getUsersPostEligibleForPoints } from '../services/facebookGraphApi'
+import { getUsersPostEligibleForPoints, getPostMetadata } from '../services/facebookGraphApi'
 import { getUserFbID, getNewPosts } from '../services/campaignDb'
+import { getPointsForPosts } from '../services/campaignDb'
 
 const router = express.Router()
 
@@ -85,7 +86,7 @@ router.get('/posts', async (req, res) => {
   const postMetadata = await getPostMetadata(newPosts);
 
   // Get points for each post
-  const points = await getPointsForPosts(postMetadata);
+  const points = await getPointsForPosts(newPosts);
 
   // merge post metadata with points
   const postsWithPoints = posts.map((post, index) => ({

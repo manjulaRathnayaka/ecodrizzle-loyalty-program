@@ -54,7 +54,7 @@ export const extractPostAndUserIds = (
 
 // Get post metadata from facebook graph api
 export const getPostMetadata = async (posts: any[]) => {
-    const postMetadata = await facebookApi.get(`/${posts.postId}`, {
+    const postMetadata = await facebookApi.get(`/${posts[0].postId}`, {
         params: {
             access_token: facebook.pageToken,
         },
