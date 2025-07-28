@@ -34,11 +34,11 @@ app.get('/health', (_, res) => {
 })
 
 // // API routes
-app.use('/api/auth', authRoutes)
-app.use('/api/users', userRoutes)
-app.use('/api/points', pointsRoutes)
-app.use('/api/rewards', rewardsRoutes)
-app.use('/api/social-media', socialMediaRoutes)
+app.use('/auth', authRoutes)
+app.use('/users', userRoutes)
+app.use('/points', pointsRoutes)
+app.use('/rewards', rewardsRoutes)
+app.use('/social-media', socialMediaRoutes)
 
 // Error handling middleware
 app.use((err: any, _: express.Request, res: express.Response, __: express.NextFunction) => {
