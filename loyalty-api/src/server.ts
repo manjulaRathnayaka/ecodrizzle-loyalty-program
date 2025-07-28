@@ -10,7 +10,7 @@ import socialMediaRoutes from './routes/socialMedia'
 dotenv.config()
 
 const app = express()
-const PORT = process.env.PORT || 3001
+const PORT = 3001
 
 app.use(cors({
   origin: true,
