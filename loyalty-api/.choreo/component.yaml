@@ -15,4 +15,4 @@ dependencies:
     - name: loyaltyDb
       resourceRef: database:loyalty-campaign-db/loyaltyDB
     - name: ScoreAPI
-      resourceRef: service:/loyalty-campaign/social-media-post-scorer/v1/5c69c/ORGANIZATION
+      resourceRef: service:/loyalty-campaign/social-media-post-scorer/v1/5c69c/PROJECT
