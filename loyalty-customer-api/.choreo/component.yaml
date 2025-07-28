@@ -1,8 +1,8 @@
 schemaVersion: 1.2
-name: loyalty-customer-api
+name: customer-api
 componentType: service
 endpoints:
-  - name: loyalty-customer-api
+  - name: customer-api
     port: 8080
     type: REST
     service:
@@ -11,20 +11,18 @@ endpoints:
     networkVisibilities:
       - Organization
     schemaFilePath: openapi.yaml
-
+dependencies:
+    connectionReferences:
+    - name: loyalty-tcp-proxy
+      resourceRef: service:/temp-project/vpn/1.0.0/c295f/PROJECT
 configurations:
   env:
-    - name: ENTERPRISE_CUSTOMER_REWARDS_BACKEND
-      valueFrom:
-        configForm:
-          displayName: Enterprise Customer Rewards Backend URL
-          type: string
-    - name: ENTERPRISE_CUSTOMER_REWARDS_BACKEND_USER
+    - name: CHOREO_LOYALTY_TCP_PROXY_USERNAME
       valueFrom:
         configForm:
           displayName: Enterprise Customer Rewards Backend User
           type: string
-    - name: ENTERPRISE_CUSTOMER_REWARDS_BACKEND_PASS
+    - name: CHOREO_LOYALTY_TCP_PROXY_PASSWORD
       valueFrom:
         configForm:
           displayName: Enterprise Customer Rewards Backend Password
