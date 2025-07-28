@@ -1,0 +1,12 @@
+schemaVersion: "1.2"
+# Endpoints that this component exposes
+endpoints:
+  - name: loyalty-api
+    type: REST
+    service:
+      basePath: /
+      port: 3001
+    networkVisibilities:
+      - Organization
+    schemaFilePath: openapi.yaml
+# Configuration for runtime environment variables

@@ -1,0 +1,626 @@
+openapi: 3.1.0
+info:
+  title: EcoDrizzle Loyalty Program API
+  description: Backend service for managing customer loyalty points, rewards, and social media integrations
+  version: 1.0.0
+  contact:
+    name: EcoDrizzle
+servers:
+  - url: /api
+    description: API base path
+paths:
+  /health:
+    get:
+      summary: Health check endpoint
+      tags:
+        - Health
+      responses:
+        "200":
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: OK
+                  message:
+                    type: string
+                    example: EcoDrizzle Loyalty API is running
+                  timestamp:
+                    type: string
+                    format: date-time
+
+  /auth/login:
+    post:
+      summary: User authentication
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: demo@example.com
+                password:
+                  type: string
+                  example: demo123
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          user:
+                            $ref: "#/components/schemas/User"
+                          token:
+                            type: string
+        "400":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+
+  /auth/register:
+    post:
+      summary: User registration
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+                - name
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 6
+                name:
+                  type: string
+      responses:
+        "201":
+          description: Registration successful
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          user:
+                            $ref: "#/components/schemas/User"
+                          token:
+                            type: string
+        "400":
+          description: Registration failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+
+  /points/balance:
+    get:
+      summary: Get user's points balance
+      tags:
+        - Points
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Points balance retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          balance:
+                            type: number
+                            example: 2450
+
+  /points/transactions:
+    get:
+      summary: Get transaction history
+      tags:
+        - Points
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+      responses:
+        "200":
+          description: Transactions retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Transaction"
+
+  /rewards:
+    get:
+      summary: Get all available rewards
+      tags:
+        - Rewards
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Rewards retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Reward"
+
+  /rewards/{id}/redeem:
+    post:
+      summary: Redeem a specific reward
+      tags:
+        - Rewards
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Reward redeemed successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          message:
+                            type: string
+        "404":
+          description: Reward not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+
+  /social-media/accounts:
+    get:
+      summary: Get connected social media accounts
+      tags:
+        - Social Media
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Connected accounts retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/SocialMediaAccount"
+
+  /social-media/posts:
+    get:
+      summary: Get social media posts
+      tags:
+        - Social Media
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: platform
+          in: query
+          schema:
+            type: string
+            enum: [facebook, twitter, instagram, linkedin]
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [pending, approved, rejected]
+      responses:
+        "200":
+          description: Posts retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/SocialMediaPost"
+
+    post:
+      summary: Submit a new social media post for review
+      tags:
+        - Social Media
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - platform
+                - postUrl
+                - content
+              properties:
+                platform:
+                  type: string
+                  enum: [facebook, twitter, instagram, linkedin]
+                postUrl:
+                  type: string
+                  format: uri
+                content:
+                  type: string
+      responses:
+        "201":
+          description: Post submitted successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/SocialMediaPost"
+
+  /social-media/posts/{id}/claim:
+    post:
+      summary: Claim points for an approved post
+      tags:
+        - Social Media
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Points claimed successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          pointsAwarded:
+                            type: number
+                          newBalance:
+                            type: number
+
+  /users/profile:
+    get:
+      summary: Get user profile
+      tags:
+        - Users
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: User profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/User"
+
+    put:
+      summary: Update user profile
+      tags:
+        - Users
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                avatar:
+                  type: string
+                  format: uri
+                preferences:
+                  $ref: "#/components/schemas/UserPreferences"
+      responses:
+        "200":
+          description: Profile updated successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/User"
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    ApiResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+
+    ApiErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+        avatar:
+          type: string
+          format: uri
+        pointsBalance:
+          type: number
+        tier:
+          type: string
+          enum: [Bronze, Silver, Gold, Platinum]
+        joinDate:
+          type: string
+          format: date
+        preferences:
+          $ref: "#/components/schemas/UserPreferences"
+
+    UserPreferences:
+      type: object
+      properties:
+        notifications:
+          type: boolean
+        theme:
+          type: string
+          enum: [light, dark]
+        language:
+          type: string
+
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        type:
+          type: string
+          enum: [earn, spend]
+        amount:
+          type: number
+        description:
+          type: string
+        source:
+          type: string
+          enum: [purchase, referral, reward, social_media, bonus]
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum: [completed, pending, failed]
+
+    Reward:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        pointsRequired:
+          type: number
+        category:
+          type: string
+          enum: [gift_cards, discounts, merchandise, experiences]
+        imageUrl:
+          type: string
+          format: uri
+        availability:
+          type: number
+        redemptionInstructions:
+          type: string
+        featured:
+          type: boolean
+
+    SocialMediaPost:
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        platform:
+          type: string
+          enum: [facebook, twitter, instagram, linkedin]
+        postUrl:
+          type: string
+          format: uri
+        postId:
+          type: string
+        content:
+          type: string
+        engagement:
+          $ref: "#/components/schemas/PostEngagement"
+        postDate:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum: [pending, approved, rejected]
+        pointsEarned:
+          type: number
+        pointsClaimed:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    PostEngagement:
+      type: object
+      properties:
+        likes:
+          type: number
+        shares:
+          type: number
+        comments:
+          type: number
+        views:
+          type: number
+
+    SocialMediaAccount:
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        platform:
+          type: string
+          enum: [facebook, twitter, instagram, linkedin]
+        handle:
+          type: string
+        displayName:
+          type: string
+        profileImageUrl:
+          type: string
+          format: uri
+        verified:
+          type: boolean
+        connectedDate:
+          type: string
+          format: date-time
+        lastSyncDate:
+          type: string
+          format: date-time
+        isActive:
+          type: boolean
+        permissions:
+          type: array
+          items:
+            type: string
+
+tags:
+  - name: Health
+    description: Health check endpoints
+  - name: Authentication
+    description: User authentication and registration
+  - name: Points
+    description: Points balance and transaction management
+  - name: Rewards
+    description: Reward catalog and redemption
+  - name: Social Media
+    description: Social media integration and post management
+  - name: Users
+    description: User profile management
