@@ -9,6 +9,7 @@ endpoints:
       port: 8080
     networkVisibilities:
       - Organization
+      - Project
     schemaFilePath: openapi.yaml
 
 # Runtime configurations
