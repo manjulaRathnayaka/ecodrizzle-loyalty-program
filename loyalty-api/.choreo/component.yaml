@@ -7,7 +7,7 @@ endpoints:
       basePath: /
       port: 3001
     networkVisibilities:
-      - Organization
+      - Public
     schemaFilePath: openapi.yaml
 # Configuration for runtime environment variables
 dependencies:
