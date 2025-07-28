@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { useAuth } from '../contexts/AuthContext'
+import { getApiConfig } from '../config/api'
 
 const LoginContainer = styled.div`
   min-height: 100vh;
@@ -145,23 +146,55 @@ const FeatureItem = styled.li`
 `
 
 const Login: React.FC = () => {
-  const { login } = useAuth()
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [isHealthChecking, setIsHealthChecking] = useState(true)
+
+  // Check health API on component mount
+  useEffect(() => {
+    const checkHealth = async () => {
+      try {
+        const config = getApiConfig()
+        const response = await fetch('/choreo-apis/loyalty-campaign/loyalty-api/v1/health', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+
+        if (response.status === 200) {
+          // API is healthy, navigate to dashboard
+          navigate('/dashboard')
+        } else {
+          // API is not healthy, show login button
+          setIsHealthChecking(false)
+        }
+      } catch (error) {
+        // API is not available, show login button
+        console.error('Health check failed:', error)
+        setIsHealthChecking(false)
+      }
+    }
+
+    checkHealth()
+  }, [navigate])
 
   const handleLogin = async () => {
-    setIsLoading(true)
-    setError(null)
-    
-    try {
-      await login('demo@example.com', 'demo123')
-      navigate('/dashboard')
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Login failed')
-    } finally {
-      setIsLoading(false)
-    }
+    window.location.href = "/auth/login";
+  }
+
+  // Show loading while checking health
+  if (isHealthChecking) {
+    return (
+      <LoginContainer>
+        <LoginCard>
+          <Logo>EcoDrizzle Rewards</Logo>
+          <Subtitle>Checking system status...</Subtitle>
+          <LoadingSpinner />
+        </LoginCard>
+      </LoginContainer>
+    )
   }
 
   return (
@@ -189,12 +222,6 @@ const Login: React.FC = () => {
             {error}
           </ErrorMessage>
         )}
-
-        <DemoCredentials>
-          <DemoTitle>Demo Credentials</DemoTitle>
-          <DemoText>Email: demo@example.com</DemoText>
-          <DemoText>Password: demo123</DemoText>
-        </DemoCredentials>
       </LoginCard>
     </LoginContainer>
   )
