@@ -9,7 +9,6 @@ endpoints:
       basePath: /api/v2
       port: 8080
     networkVisibilities:
-      - Public
       - Organization
     schemaFilePath: openapi.yaml
 
