@@ -82,7 +82,7 @@ router.post('/register', async (req, res) => {
 
     // Demo registration - in production, save to database
     const hashedPassword = await bcrypt.hash(password, 10)
-    
+
     const newUser: User = {
       id: Date.now().toString(),
       email,

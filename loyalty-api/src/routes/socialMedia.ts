@@ -1,5 +1,8 @@
 import express from 'express'
 import { ApiResponse, SocialMediaPost } from '../types'
+import { facebook } from '../config'
+import { getUsersPostEligibleForPoints } from '../services/facebookGraphApi'
+import { getUserFbID, getNewPosts } from '../services/campaignDb'
 
 const router = express.Router()
 
@@ -65,33 +68,57 @@ router.get('/accounts', (req, res) => {
   res.json(response)
 })
 
-// Get social media posts
-router.get('/posts', (req, res) => {
+// Get social media posts which are eligible for points
+router.get('/posts', async (req, res) => {
+
+  const userId = await getUserFbID("priyanga8312@gmail.com");
+  if (!userId) {
+    return return404(res, 'No Facebook user mapping found for the given email');
+  }
+  // Get all posts for the page
+  const posts = await getUsersPostEligibleForPoints(facebook.pageId, userId);
+
+  // find new posts
+  const newPosts = await getNewPosts(posts);
+
+  // Get post metadata from facebook graph api
+  const postMetadata = await getPostMetadata(newPosts);
+
+  // Get points for each post
+  const points = await getPointsForPosts(postMetadata);
+
+  // merge post metadata with points
+  const postsWithPoints = posts.map((post, index) => ({
+    ...post,
+    pointsEarned: points[index]
+  }));
+
+  console.log(postsWithPoints)
   const response: ApiResponse<SocialMediaPost[]> = {
     success: true,
     message: 'Social media posts retrieved successfully',
     data: mockPosts,
     timestamp: new Date().toISOString()
   }
-  res.json(response)
+  res.json(postsWithPoints)
 })
 
 // Claim social media points
 router.post('/claim', (req, res) => {
   const { userId, email } = req.body
-  
+
   const unclaimedPosts = mockPosts.filter(
     post => post.status === 'approved' && !post.pointsClaimed
   )
-  
+
   const totalPoints = unclaimedPosts.reduce((sum, post) => sum + post.pointsEarned, 0)
-  
+
   // Mark posts as claimed
   unclaimedPosts.forEach(post => {
     post.pointsClaimed = true
     post.updatedAt = new Date().toISOString()
   })
-  
+
   const response: ApiResponse<{ pointsEarned: number }> = {
     success: true,
     message: 'Points claimed successfully',
@@ -100,5 +127,14 @@ router.post('/claim', (req, res) => {
   }
   res.json(response)
 })
+
+function return404(res: any, message: string) {
+  return res.status(404).json({
+    success: false,
+    message: message,
+    data: [],
+    timestamp: new Date().toISOString()
+  });
+}
 
 export default router

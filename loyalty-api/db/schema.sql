@@ -11,7 +11,6 @@ CREATE TABLE email_facebook_mapping (
     
     INDEX idx_facebook_user_id (facebook_user_id)
 );
-
 -- ================================================================
 -- Posts Loyalty Points Table
 -- ================================================================
@@ -30,3 +29,6 @@ CREATE TABLE posts_loyalty_points (
     INDEX idx_facebook_user_id (facebook_user_id),
     INDEX idx_post_id (post_id)
 );
+
+-- till we get the facebook login to pass the facebook user id, we will use this mapping
+INSERT INTO email_facebook_mapping (email, facebook_user_id) VALUES ('priyanga8312@gmail.com', '122102357246954145');

@@ -1,7 +1,10 @@
 import express from 'express'
 import { ApiResponse, Transaction } from '../types'
+import { facebook } from '../config'
 
 const router = express.Router()
+
+
 
 const mockTransactions: Transaction[] = [
   {
@@ -42,9 +45,9 @@ router.get('/transactions', (req, res) => {
   const page = parseInt(req.query.page as string) || 1
   const limit = parseInt(req.query.limit as string) || 10
   const start = (page - 1) * limit
-  
+
   const paginatedTransactions = mockTransactions.slice(start, start + limit)
-  
+
   const response: ApiResponse<Transaction[]> = {
     success: true,
     message: 'Transactions retrieved successfully',

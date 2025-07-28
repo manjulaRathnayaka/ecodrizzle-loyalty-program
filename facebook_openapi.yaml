@@ -1,0 +1,57 @@
+openapi: 3.0.3
+info:
+  title: Facebook Graph API Proxy
+  version: "19.0"
+  description: >
+    Catch-all OpenAPI schema for proxying any Facebook Graph API requests.
+    Supports GET, POST, DELETE, etc., on dynamic paths like `/me`, `/123/comments`, etc.
+servers:
+  - url: https://graph.facebook.com/v19.0
+paths:
+  /*:
+    get:
+      summary: Proxy GET request to Facebook Graph API
+      parameters:
+        - name: access_token
+          in: query
+          required: true
+          description: Facebook Graph API access token
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json: {}
+    post:
+      summary: Proxy POST request to Facebook Graph API
+      parameters:
+        - name: access_token
+          in: query
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json: {}
+    delete:
+      summary: Proxy DELETE request to Facebook Graph API
+      parameters:
+        - name: access_token
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json: {}
