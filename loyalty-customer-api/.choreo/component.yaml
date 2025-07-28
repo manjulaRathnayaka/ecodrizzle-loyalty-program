@@ -11,19 +11,20 @@ endpoints:
     networkVisibilities:
       - Organization
     schemaFilePath: openapi.yaml
-dependencies:
-    connectionReferences:
-    - name: loyalty-tcp-proxy
-      resourceRef: service:/temp-project/vpn/1.0.0/c295f/PROJECT
 configurations:
   env:
+    - name: CHOREO_LOYALTY_TCP_PROXY_SERVICEURL
+      valueFrom:
+        configForm:
+          displayName: Loyalty Customer TCP Proxy Service URL
+          type: string
     - name: CHOREO_LOYALTY_TCP_PROXY_USERNAME
       valueFrom:
         configForm:
-          displayName: Enterprise Customer Rewards Backend User
+          displayName: Loyalty Customer TCP Proxy Username
           type: string
     - name: CHOREO_LOYALTY_TCP_PROXY_PASSWORD
       valueFrom:
         configForm:
-          displayName: Enterprise Customer Rewards Backend Password
+          displayName: Loyalty Customer TCP Proxy Password
           type: secret
