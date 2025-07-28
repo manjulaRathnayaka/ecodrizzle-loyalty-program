@@ -16,3 +16,5 @@ dependencies:
       resourceRef: database:loyalty-campaign-db/loyaltyDB
     - name: ScoreAPI
       resourceRef: service:/loyalty-campaign/social-media-post-scorer/v1/5c69c/PROJECT
+    - name: LoyaltyCustomerAPI
+      resourceRef: service:/loyalty-core/loyalty-customer-api/v1/c9bdd/ORGANIZATION
