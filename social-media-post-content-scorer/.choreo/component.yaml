@@ -14,7 +14,7 @@ endpoints:
 dependencies:
     connectionReferences:
     - name: OpenAICon
-      resourceRef: thirdparty:OpenAISvc2/v1
+      resourceRef: thirdparty:OpenAIService/v1
 # Runtime configurations
 configurations:
   # Environment variables to be injected into the component
