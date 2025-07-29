@@ -11,7 +11,10 @@ endpoints:
       - Organization
       - Project
     schemaFilePath: openapi.yaml
-
+dependencies:
+    connectionReferences:
+    - name: OpenAICon
+      resourceRef: thirdparty:OpenAISvc2/v1
 # Runtime configurations
 configurations:
   # Environment variables to be injected into the component

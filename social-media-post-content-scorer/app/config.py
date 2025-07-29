@@ -12,6 +12,7 @@ class Settings(BaseSettings):
 
     class Config:
         env_file = ".env"
+        env_prefix = "CHOREO_OPENAICON_"  # Added prefix to read from CHOREO_OPENAICON_OPENAI_API_KEY
 
 
 settings = Settings()
